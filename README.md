@@ -4,7 +4,7 @@ Water simulation implementation based on Matthias Müller-Fischer's "Fast Water 
 
 Demo Video:
 
-https://www.youtube.com/watch?v=fgE3CH4zDmI
+https://www.youtube.com/watch?v=zSdO6S5WhGk
 
 Recently I added lighting, but it still needs to be improved.
 
