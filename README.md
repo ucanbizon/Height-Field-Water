@@ -6,6 +6,8 @@ Demo Video:
 
 https://www.youtube.com/watch?v=zSdO6S5WhGk
 
+![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/zSdO6S5WhGk/0.jpg)
+
 Recently I added lighting, but it still needs to be improved.
 
 Required dependencies:
