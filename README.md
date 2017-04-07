@@ -4,6 +4,8 @@ Water simulation implementation based on Matthias Müller-Fischer's "Fast Water 
 
 Demo Video:
 
+//![Everything Is AWESOME](https://img.youtube.com/vi/zSdO6S5WhGk/0.jpg)
+//(https://www.youtube.com/watch?v=zSdO6S5WhGk "Everything Is AWESOME")
 
 Recently I added lighting, but it still needs to be improved.
 
