@@ -15,42 +15,42 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="drop.frag">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="drop.vert">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="normal.frag">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="proc.frag">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="quad.frag">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="quad.vert">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="watermesh.vert">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="watermesh.frag">
-      <Filter>Resource Files</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Shaders\drop.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Shaders\drop.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Shaders\normal.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Shaders\proc.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Shaders\watermesh.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Shaders\watermesh.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Shaders\debug.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Shaders\debug.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Util\Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Util\Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

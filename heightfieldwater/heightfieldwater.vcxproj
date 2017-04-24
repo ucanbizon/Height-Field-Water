@@ -148,21 +148,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="Shader.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="drop.frag" />
-    <None Include="drop.vert" />
-    <None Include="normal.frag" />
-    <None Include="proc.frag" />
-    <None Include="quad.frag" />
-    <None Include="quad.vert" />
-    <None Include="watermesh.frag" />
-    <None Include="watermesh.vert" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Shaders\drop.frag" />
+    <None Include="..\Shaders\drop.vert" />
+    <None Include="..\Shaders\normal.frag" />
+    <None Include="..\Shaders\proc.frag" />
+    <None Include="..\Shaders\debug.frag" />
+    <None Include="..\Shaders\debug.vert" />
+    <None Include="..\Shaders\watermesh.frag" />
+    <None Include="..\Shaders\watermesh.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Util\Camera.h" />
+    <ClInclude Include="..\Util\Shader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

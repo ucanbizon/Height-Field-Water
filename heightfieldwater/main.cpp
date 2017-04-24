@@ -1,6 +1,4 @@
 #include <iostream>
-//#include <chrono>
-
 
 // GL3W
 #include <GL/gl3w.h>
@@ -12,12 +10,10 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/string_cast.hpp>
 #include <glm/gtx/intersect.hpp>
-#include "Camera.h"
-#include "Shader.h"
+#include "../Graphics/Camera.h"
+#include "../Graphics/Shader.h"
 
-GLfloat denormalize(GLfloat var){
-	return (var*2.0 -1.0);
-}
+#define DEBUG_ENABLED FALSE
 
 
 // Function prototypes
@@ -29,9 +25,7 @@ void do_movement();
 bool pathTracingWater(GLfloat &dropX, GLfloat &dropy, const glm::mat4 &view, const glm::mat4 &projection);
 inline void createWaterMesh(GLfloat *&mesh, GLint detail);
 
-// we use a fixed timestep of 1 / (60 fps) = 16 milliseconds
-//using namespace std::chrono_literals;
-//constexpr std::chrono::nanoseconds timestep(16ms);
+
 // Window dimensions
 const GLuint WIDTH = 800, HEIGHT = 600;
 const GLfloat TEXELSIZE = 1.0/256.0;
@@ -44,11 +38,9 @@ bool    keys[1024];
 bool isAddDrop = true;
 bool cameraRotEnabled = false;
 
-// Deltatime
 GLfloat deltaTime = 0.0f;	// Time between current frame and last frame
 GLfloat lastFrame = 0.0f;  	// Time of last frame
 
-// The MAIN function, from here we start the application and run the game loop
 int main()
 {
 	std::cout << "Starting GLFW context, OpenGL 3.3" << std::endl;
@@ -60,11 +52,9 @@ int main()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	// Create a GLFWwindow object that we can use for GLFW's functions
-	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "LearnOpenGL", nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "water", nullptr, nullptr);
 	glfwMakeContextCurrent(window);
 
-	// Set the required callback functions
 	glfwSetKeyCallback(window, key_callback);
 	glfwSetCursorPosCallback(window, mouseMove_callback);
 	glfwSetMouseButtonCallback(window, mouseButton_callback);
@@ -81,29 +71,13 @@ int main()
 	printf("OpenGL %s, GLSL %s\n", glGetString(GL_VERSION),
 		glGetString(GL_SHADING_LANGUAGE_VERSION));
 
-	// Define the viewport dimensions
-	//int width, height;
-	//glfwGetFramebufferSize(window, &width, &height);
 	glViewport(0, 0, WIDTH, HEIGHT);
-
-
 	
 	Shader dropShader("drop.vert", "drop.frag");
 	Shader processShader("drop.vert", "proc.frag");
 	Shader normalShader("drop.vert", "normal.frag");
-	Shader quadShader("quad.vert", "quad.frag");
+	Shader debugShader("debug.vert", "debug.frag");
 	Shader watermeshShader("watermesh.vert", "watermesh.frag");
-	// Set up vertex data (and buffer(s)) and attribute pointers
-	//GLfloat vertices[] = {
-	//  // First triangle
-	//   0.5f,  0.5f,  // Top Right
-	//   0.5f, -0.5f,  // Bottom Right
-	//  -0.5f,  0.5f,  // Top Left 
-	//  // Second triangle
-	//   0.5f, -0.5f,  // Bottom Right
-	//  -0.5f, -0.5f,  // Bottom Left
-	//  -0.5f,  0.5f   // Top Left
-	//};
 	
 	GLfloat inVertices[] = {   
 								 
@@ -116,15 +90,15 @@ int main()
 		1.0f,  1.0f, 0.0 };
 	
 	 
-	GLfloat quadVertices[] = {   
+	GLfloat debugVertices[] = {   
 								 
-		-1.0f, 0.0f, 1.0f, 0.0f, 1.0f,
-		-1.0f,  0.0f,-1.0f, 0.0f, 0.0f,
-		1.0f,  0.0f, -1.0f,1.0f, 0.0f,
+		-1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+		-1.0f,  -1.0f,0.0f, 0.0f, 0.0f,
+		1.0f,  -1.0f, 0.0f,1.0f, 0.0f,
 
-		-1.0f,  0.0f, 1.0f,0.0f, 1.0f,
-		1.0f,  0.0f,-1.0f, 1.0f, 0.0f,
-		1.0f,   0.0f, 1.0f,1.0f, 1.0f
+		-1.0f,  1.0f, 0.0f,0.0f, 1.0f,
+		1.0f,  -1.0f,0.0f, 1.0f, 0.0f,
+		1.0f,   1.0f, 0.0f,1.0f, 1.0f
 	};
 
 	GLfloat *waterMesh = NULL;
@@ -141,12 +115,12 @@ int main()
 	glBindVertexArray(0);
 
 
-	GLuint quadVAO, quadVBO;
-	glGenVertexArrays(1, &quadVAO);
-	glGenBuffers(1, &quadVBO);
-	glBindVertexArray(quadVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), quadVertices, GL_STATIC_DRAW);
+	GLuint debugVAO, debugVBO;
+	glGenVertexArrays(1, &debugVAO);
+	glGenBuffers(1, &debugVBO);
+	glBindVertexArray(debugVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, debugVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(debugVertices), debugVertices, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(1);
@@ -166,9 +140,6 @@ int main()
 	glBindVertexArray(0);
 
 
-
-
-
 	GLuint pingpongFBO[2];
 	GLuint pingpongColorbuffers[2];
 	glGenFramebuffers(2, pingpongFBO);
@@ -183,13 +154,9 @@ int main()
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, pingpongColorbuffers[i], 0);
-		// Also check if framebuffers are complete (no need for depth buffer)
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 			std::cout << "Framebuffer not complete!" << std::endl;
 	}
-
-
-
 
 	glm::mat4 model, view, projection;
 	GLint modelLoc, viewLoc, projLoc;
@@ -198,12 +165,10 @@ int main()
 
 	while (!glfwWindowShouldClose(window))
 	{
-		// Calculate deltatime of current frame
 		GLfloat currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
-		//std::cout << (1.0/deltaTime) << std::endl;
-		// Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
+
 		glfwPollEvents();
 		do_movement();
 
@@ -217,16 +182,12 @@ int main()
 
 		if(isAddDrop){
 			if(pathTracingWater(dropX, dropY, view, projection)){
-
 				dropShader.Use();
 				glBindFramebuffer(GL_FRAMEBUFFER, pingpongFBO[toggle]);
 				glBindTexture(GL_TEXTURE_2D, pingpongColorbuffers[1-toggle]);
-
 				glUniform2f(glGetUniformLocation(dropShader.Program,"center"), dropX, dropY );
-				//glUniform1f(glGetUniformLocation(dropShader.Program,"radius"), 10.0f);
 				glBindVertexArray(inVAO);
 				glDrawArrays(GL_TRIANGLES, 0, 6);
-
 				glBindVertexArray(0);
 				glBindFramebuffer(GL_FRAMEBUFFER, 0);
 				toggle = 1 - toggle;
@@ -235,105 +196,74 @@ int main()
 		}
 		{
 			glClear(GL_COLOR_BUFFER_BIT);
-
 			processShader.Use();
-
 			glBindFramebuffer(GL_FRAMEBUFFER, pingpongFBO[toggle]);
 			glBindTexture(GL_TEXTURE_2D, pingpongColorbuffers[1 - toggle]);
-
 			glUniform1f(glGetUniformLocation(processShader.Program, "delta"), TEXELSIZE);
 			glBindVertexArray(inVAO);
 			glDrawArrays(GL_TRIANGLES, 0, 6);
-
 			glBindVertexArray(0);
-
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		
 			toggle = 1 - toggle;
 		}
 
 		{
 			glClear(GL_COLOR_BUFFER_BIT);
-
 			normalShader.Use();
-
 			glBindFramebuffer(GL_FRAMEBUFFER, pingpongFBO[toggle]);
 			glBindTexture(GL_TEXTURE_2D, pingpongColorbuffers[1 - toggle]);
-
 			glUniform1f(glGetUniformLocation(normalShader.Program, "delta"), TEXELSIZE);
 			glBindVertexArray(inVAO);
 			glDrawArrays(GL_TRIANGLES, 0, 6);
-
 			glBindVertexArray(0);
-
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 			toggle = 1 - toggle;
 		}
-		#if 1
+		
 		{
 			glViewport(0, 0, WIDTH, HEIGHT);
-
 			glClearColor(0.0f, 0.3f, 0.0f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
-
 			watermeshShader.Use();
-
 			modelLoc = glGetUniformLocation(watermeshShader.Program, "model");
 			viewLoc = glGetUniformLocation(watermeshShader.Program, "view");
 			projLoc = glGetUniformLocation(watermeshShader.Program, "projection");
 			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 			glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
-
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, pingpongColorbuffers[1 - toggle]);	// Use the color attachment texture as the texture of the quad plane
-
 			glBindVertexArray(waterVAO);
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 			glDrawArrays(GL_TRIANGLES, 0, detail*detail*6);
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			glBindVertexArray(0);
 		}
-		#endif
 
 
-		#if 1
+		#if DEBUG_ENABLED
 		{
 			glViewport(0, 0, 256, 256);
-
-			//glClearColor(0.0f, 0.3f, 0.0f, 1.0f);
-			//glClear(GL_COLOR_BUFFER_BIT);
-
-			quadShader.Use();
-
-			modelLoc = glGetUniformLocation(quadShader.Program, "model");
-			viewLoc = glGetUniformLocation(quadShader.Program, "view");
-			projLoc = glGetUniformLocation(quadShader.Program, "projection");
+			debugShader.Use();
+			modelLoc = glGetUniformLocation(debugShader.Program, "model");
+			viewLoc = glGetUniformLocation(debugShader.Program, "view");
+			projLoc = glGetUniformLocation(debugShader.Program, "projection");
 			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 			glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
-		
-			glBindVertexArray(quadVAO);
-			//if(toggle == true){}
+			glBindVertexArray(debugVAO);
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, pingpongColorbuffers[1-toggle]);	// Use the color attachment texture as the texture of the quad plane
-			//}
 			glDrawArrays(GL_TRIANGLES, 0, 6);
 			glBindVertexArray(0);
 		}
 		#endif
-
-
-
-
-		// Swap the screen buffers
-		
-		
 		glfwSwapBuffers(window);
 	}
-	// Properly de-allocate all resources once they've outlived their purpose
-	glDeleteVertexArrays(1, &quadVAO);
-	glDeleteBuffers(1, &quadVBO);
+	glDeleteVertexArrays(1, &debugVAO);
+	glDeleteBuffers(1, &debugVBO);
+	glDeleteVertexArrays(1, &debugVAO);
+	glDeleteBuffers(1, &debugVBO);
 	//delete waterMesh;
 	// Terminate GLFW, clearing any resources allocated by GLFW.
 	glfwTerminate();
@@ -353,9 +283,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			keys[key] = false;
 	}
 }
-
-
-
 
 
 void do_movement()
@@ -380,7 +307,6 @@ void mouseMove_callback(GLFWwindow* window, double xpos, double ypos)
 		lastY = ypos;
 		firstMouse = false;
 	}
-	//std::cout << xpos << "  " << ypos << std::endl;
 	GLfloat xoffset = xpos - lastX;
 	GLfloat yoffset = lastY - ypos;  // Reversed since y-coordinates go from bottom to left
 
@@ -440,6 +366,10 @@ bool pathTracingWater(GLfloat &dropX, GLfloat &dropY, const glm::mat4 &view, con
 
 }
 
+inline GLfloat denormalize(GLfloat var) {
+	return (var*2.0 - 1.0);
+}
+
 inline void createWaterMesh(GLfloat *&mesh, GLint detail)
 {
 	mesh = new GLfloat[30*detail*detail];
@@ -487,9 +417,6 @@ inline void createWaterMesh(GLfloat *&mesh, GLint detail)
 			mesh[index + 29] = detailsize*(GLfloat)y;
 		}
 	}
-
-
-
 }
 
 
