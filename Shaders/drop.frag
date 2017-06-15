@@ -8,7 +8,7 @@ in vec2 coord;
 out vec4 color;
 void main(){
 	vec4 info = texture(ktexture, coord);
-	float drop = max(0.0, 1.0 - length( center - coord ) / 0.1);
+	float drop = max(0.0, 1.0 - length( center - coord ) / 0.06);
 	drop = 0.5 - cos(drop*PI)*0.5;
 	info.r += drop*0.2;
 	color = info;

@@ -13,7 +13,7 @@ void main() {
 					     texture2D(ktexture, coord - dy).r +
 						 texture2D(ktexture, coord + dx).r +
 					     texture2D(ktexture, coord + dy).r ) * 0.25;
-    info.g += (average - info.r)*2 ;
+    info.g += (average - info.r)*0.3;
     info.g *= 0.995;
     info.r += info.g;
     color = info;

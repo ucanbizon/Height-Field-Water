@@ -101,13 +101,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\Kutay\Desktop\projects\external\glfw-3.2.1.bin.WIN64\include;C:\Users\Kutay\Desktop\projects\external\gl3w\include;C:\Users\Kutay\Desktop\projects\external\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Kutay\Desktop\projects\external\Simple OpenGL Image Library\src;C:\Users\Kutay\Desktop\projects\external\glfw-3.2.1.bin.WIN64\include;C:\Users\Kutay\Desktop\projects\external\gl3w\include;C:\Users\Kutay\Desktop\projects\external\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\Kutay\Desktop\projects\external\glfw-3.2.1.bin.WIN64\lib-vc2015;C:\Users\Kutay\Desktop\projects\external\gl3w\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;glfw3dll.lib;gl3w.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\Kutay\Desktop\projects\external\Simple OpenGL Image Library\lib;C:\Users\Kutay\Desktop\projects\external\glfw-3.2.1.bin.WIN64\lib-vc2015;C:\Users\Kutay\Desktop\projects\external\gl3w\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SOIL.lib;glfw3.lib;glfw3dll.lib;gl3w.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -136,15 +136,15 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\Kutay\Desktop\projects\external\glfw-3.2.1.bin.WIN64\include;C:\Users\Kutay\Desktop\projects\external\gl3w\include;C:\Users\Kutay\Desktop\projects\external\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Kutay\Desktop\projects\external\stb_image;C:\Users\Kutay\Desktop\projects\external\assimp-3.3.1\include;C:\Users\Kutay\Desktop\projects\external\Simple OpenGL Image Library\src;C:\Users\Kutay\Desktop\projects\external\glfw-3.2.1.bin.WIN64\include;C:\Users\Kutay\Desktop\projects\external\gl3w\include;C:\Users\Kutay\Desktop\projects\external\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\Kutay\Desktop\projects\external\glfw-3.2.1.bin.WIN64\lib-vc2015;C:\Users\Kutay\Desktop\projects\external\gl3w\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;glfw3dll.lib;gl3w.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\Kutay\Desktop\projects\external\assimp-3.3.1\build\code\Release;C:\Users\Kutay\Desktop\projects\external\Simple OpenGL Image Library\projects\VC9\x64\Release;C:\Users\Kutay\Desktop\projects\external\glfw-3.2.1.bin.WIN64\lib-vc2015;C:\Users\Kutay\Desktop\projects\external\gl3w\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>assimp-vc140-mt.lib;SOIL.lib;glfw3.lib;glfw3dll.lib;gl3w.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -153,15 +153,21 @@
   <ItemGroup>
     <None Include="..\Shaders\drop.frag" />
     <None Include="..\Shaders\drop.vert" />
+    <None Include="..\Shaders\model.frag" />
+    <None Include="..\Shaders\model.vert" />
     <None Include="..\Shaders\normal.frag" />
     <None Include="..\Shaders\proc.frag" />
     <None Include="..\Shaders\debug.frag" />
     <None Include="..\Shaders\debug.vert" />
+    <None Include="..\Shaders\skybox.frag" />
+    <None Include="..\Shaders\skybox.vert" />
     <None Include="..\Shaders\watermesh.frag" />
     <None Include="..\Shaders\watermesh.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Util\Camera.h" />
+    <ClInclude Include="..\Util\Mesh.h" />
+    <ClInclude Include="..\Util\Model.h" />
     <ClInclude Include="..\Util\Shader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

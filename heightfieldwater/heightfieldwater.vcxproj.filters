@@ -44,12 +44,30 @@
     <None Include="..\Shaders\debug.frag">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="..\Shaders\skybox.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Shaders\skybox.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Shaders\model.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Shaders\model.vert">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Util\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Util\Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Util\Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Util\Model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
