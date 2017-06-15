@@ -6,7 +6,8 @@ Water simulation implementation based on Matthias Müller-Fischer's "Fast Water 
 [![Link](https://img.youtube.com/vi/zSdO6S5WhGk/0.jpg)](https://www.youtube.com/watch?v=zSdO6S5WhGk)
 
 
-Recently I added lighting, but it still needs to be improved.
+Current situation:
+![alt text](https://raw.githubusercontent.com/ucanbizon/Height-Field-Water/master/haviz.png)
 
 Required dependencies:
 
